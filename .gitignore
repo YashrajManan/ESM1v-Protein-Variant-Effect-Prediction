@@ -1,0 +1,17 @@
+# Private, git-ignored per this portfolio's convention -- learning files, not published
+WORKFLOW.md
+PROJECT_NARRATIVE.md
+INTERVIEW_QA.md
+INTERPRETATION.md
+
+# Downloaded/intermediate data + cached scores -- large, reproducible by rerunning the notebook
+*.parquet
+*.npz
+*.npy
+proteingym_cache/
+wandb/
+
+# Standard
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

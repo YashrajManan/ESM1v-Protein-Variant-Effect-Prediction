@@ -1,0 +1,5 @@
+metric,target,value,p_value,n
+spearman_rho_single_checkpoint,R1AB_SARS2_Flynn_2022,-0.0299,2.35e-02,5725
+spearman_rho_blosum62_baseline,R1AB_SARS2_Flynn_2022,0.2068,2.34e-56,5725
+spearman_rho_5model_ensemble,R1AB_SARS2_Flynn_2022,-0.0404,2.22e-03,5725
+clinvar_auroc,NP_000518.1 (LDLR),0.9590,,639

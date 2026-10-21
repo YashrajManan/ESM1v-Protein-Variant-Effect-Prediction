@@ -1,0 +1,3 @@
+method,spearman_rho,p_value
+ESM-1v zero-shot,-0.029933,2.352366e-02
+BLOSUM62 baseline,0.206837,2.339436e-56
