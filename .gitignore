@@ -11,6 +11,10 @@ INTERPRETATION.md
 proteingym_cache/
 wandb/
 
+# Stray raw/uncleaned copy of the uploaded notebook -- not the deliverable,
+# variant_effect_protein_lm.ipynb (underscores) is the real clean pushable one
+variant-effect-protein-lm.ipynb
+
 # Standard
 __pycache__/
 *.pyc
