@@ -102,20 +102,16 @@ checked explicitly before trusting a zero-shot score on a new protein — especi
 
 ## 8. Learning through project
 
-A CUDA device-side assert poisons the entire process, not just the failing cell — recovering requires a
-full kernel restart, and the fastest correct diagnosis is a cheap, synchronous CPU-side check
-(`model.config.max_position_embeddings` vs. the tokenized sequence length) rather than repeatedly re-running
-the failing GPU cell. ESM-1v's fixed, learned absolute positional embeddings (capped at 1026 tokens) are a
-real architectural constraint that ESM-2's rotary embeddings don't share — worth checking before choosing a
-target protein, not after a crash. "Pick the best-represented candidate" is a recurring trap: the exact same
-length-blindness mistake appeared twice in this build, once selecting by biological-importance search
-(`DMS_id`) and independently again selecting by raw frequency (`protein_id`) — any selection-by-popularity
-logic needs an explicit feasibility filter applied before ranking by how interesting a candidate looks.
-Memory cleanup code placed in the wrong part of a loop (freeing a model before it's used, instead of after)
-fails loudly and immediately, which is easy to catch; memory never freed at all fails much later and less
-obviously (a real `OutOfMemoryError` on the 4th of 5 checkpoints). Real concurrent use of two GPUs in one
-process needs explicit per-thread `torch.cuda.set_device(...)` calls — there is no global setting that
-makes independent models land on separate GPUs automatically.
+A GPU-side assertion failure poisons the entire process, not just the failing cell — recovering requires a
+full kernel restart, so the fastest correct diagnosis is a cheap, synchronous CPU-side check of the real
+constraint in question (here, a model's maximum position embeddings against the tokenized sequence length)
+rather than repeatedly re-running the failing GPU cell; a model's architectural limits are worth checking
+before choosing a target input, not after a crash. "Pick the best-represented candidate" is a recurring
+trap wherever a selection-by-popularity step runs before an explicit feasibility filter — a candidate can
+look maximally interesting by one ranking and still be unusable downstream. Memory that is never freed
+fails much later and less obviously than memory freed at the wrong time, which makes it the harder of the
+two to catch; and running models concurrently across multiple GPUs in one process needs an explicit,
+per-thread device assignment rather than any implicit global setting.
 
 ## 9. Caveats
 
